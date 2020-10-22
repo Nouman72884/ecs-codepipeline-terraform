@@ -94,8 +94,8 @@ module "code_deploy" {
   ecs_service_name = module.service.ecs_service_name
   alb_listener_1   = module.alb.alb_listener_1
   alb_listener_2   = module.alb.alb_listener_2
-  target_group_1   = module.alb.target_groups[0].arn
-  target_group_2   = module.alb.target_groups[1].arn
+  target_group_1   = module.alb.target_groups[0].name
+  target_group_2   = module.alb.target_groups[1].name
   task_role        = module.ecs_cluster.task_role
   execution_role   = module.ecs_cluster.execution_role
 }
