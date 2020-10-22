@@ -285,8 +285,8 @@ resource "aws_codepipeline" "this" {
       version = "1"
 
       configuration = {
-        ApplicationName = "AppECS-nginx_cluster-nginx"
-        DeploymentGroupName = "DgpECS-nginx_cluster-nginx"
+        ApplicationName = "nginx-service-deploy"
+        DeploymentGroupName = "nginx-service-deploy-group"
         TaskDefinitionTemplateArtifact = "BuildArtifact"
         TaskDefinitionTemplatePath = "taskdef.json"
         AppSpecTemplateArtifact = "BuildArtifact"
