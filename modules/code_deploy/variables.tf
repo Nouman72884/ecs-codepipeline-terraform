@@ -1,0 +1,9 @@
+variable "service_name" {}
+variable "ecs_cluster_name" {}
+variable "ecs_service_name" {}
+variable "alb_listener_1" {}
+variable "alb_listener_2" {}
+variable "target_group_1" {}
+variable "target_group_2" {}
+variable "task_role" {}
+variable "execution_role" {}
