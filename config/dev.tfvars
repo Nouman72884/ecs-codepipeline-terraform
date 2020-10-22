@@ -7,9 +7,9 @@ aws_account_id = "020046395185"
 
 github = {
     github_owner = "Nouman72884"
-    github_repo = "codedeploy"
+    github_repo = "ecs-codepipeline-terraform"
     github_branch = "master"
-    github_token = "960821e4581082b2f98c389469bc69b04abd67b9"
+    github_token = "bb6dfa3e7a23a6cba2339a61d5b4e411a0ddff2b"
 }
 vpc = {
     vpc_id = "vpc-0f7c4b54536f31bf0"

@@ -1,5 +1,5 @@
 output "target_groups" {
-  value = aws_lb_target_group.tgs.*.arn
+  value = aws_lb_target_group.tgs
 }
 
 output "alb_listener_1" {

@@ -11,11 +11,11 @@ resource "aws_ecs_service" "service" {
     type = "CODE_DEPLOY"
   }
 
-  network_configuration {
-    subnets          = var.private_subnet_ids
-    security_groups  = var.instance_security_group_id
-    assign_public_ip = true
-  }
+  # network_configuration {
+  #   subnets          = var.private_subnet_ids
+  #   security_groups  = [var.instance_security_group_id]
+  #   assign_public_ip = true
+  # }
 
   dynamic "load_balancer" {
     for_each = var.target_groups
@@ -26,6 +26,13 @@ resource "aws_ecs_service" "service" {
     }
   }
 
+
+  lifecycle {
+    ignore_changes = [
+      task_definition,
+      load_balancer,
+    ]
+  }
   # load_balancer {
   #   target_group_arn = var.alb_target_groups_arn_0
   #   container_name   = var.service_name

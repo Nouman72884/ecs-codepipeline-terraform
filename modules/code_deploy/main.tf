@@ -97,7 +97,9 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
       prod_traffic_route {
         listener_arns = [var.alb_listener_1]
       }
-
+      test_traffic_route {
+        listener_arns = [var.alb_listener_2]
+      }
       target_group {
         name = var.target_group_1
       }

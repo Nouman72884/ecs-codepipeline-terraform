@@ -353,7 +353,7 @@ resource "aws_codebuild_project" "this" {
  }
   source {
     type      = "CODEPIPELINE"
-    buildspec = "buildspec.yaml"
-    #buildspec = var.buildspec
+    #buildspec = "buildspec.yaml"
+    buildspec = var.buildspec
   }
 }

@@ -26,6 +26,7 @@ phases:
       - printf '{"ImageURI":"%s"}' 020046395185.dkr.ecr.us-east-1.amazonaws.com/nginx:latest  > imageDetail.json
       - sed -i 's/<APP_NAME>/'${app_name}'/g' appspec.yaml taskdef.json
       - sed -i 's/<SERVICE_PORT>/${service_port}/g' appspec.yaml taskdef.json
+      - sed -i 's/<TASK_DEFINITION>/'${task_definition_arn}'/g' appspec.yaml
       - sed -i 's/<AWS_ACCOUNT_ID>/${aws_account_id}/g' taskdef.json
       - sed -i 's/<MEMORY_RESV>/${memory_reserv}/g' taskdef.json
       - sed -i 's/<IMAGE_NAME>/'${image_name}'/g' taskdef.json
