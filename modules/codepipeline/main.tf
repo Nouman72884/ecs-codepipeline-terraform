@@ -316,44 +316,44 @@ resource "aws_codebuild_project" "this" {
     type            = "LINUX_CONTAINER"
     privileged_mode = true
 
-  #   environment_variable {
-  #     name  = "IMAGE_REPO_NAME"
-  #     value = var.service_name
-  #   }
+    environment_variable {
+      name  = "IMAGE_REPO_NAME"
+      value = var.service_name
+    }
 
-  #   environment_variable {
-  #     name  = "TASK_DEFINITION"
-  #     value = var.task_definition
-  #   }
+    environment_variable {
+      name  = "TASK_DEFINITION"
+      value = var.task_definition
+    }
 
-  #   environment_variable {
-  #     name  = "AWS_ACCOUNT_ID"
-  #     value = var.aws_account_id
-  #   }
+    environment_variable {
+      name  = "AWS_ACCOUNT_ID"
+      value = var.aws_account_id
+    }
 
-  #   environment_variable {
-  #     name  = "AWS_DEFAULT_REGION"
-  #     value = var.aws_region
-  #   }
+    environment_variable {
+      name  = "AWS_DEFAULT_REGION"
+      value = var.aws_region
+    }
 
-  #   environment_variable {
-  #     name  = "IMAGE_TAG"
-  #     value = "latest"
-  #   }
+    environment_variable {
+      name  = "IMAGE_TAG"
+      value = "latest"
+    }
 
-  #   environment_variable {
-  #     name  = "SERVICE_PORT"
-  #     value = var.container_port
-  #   }
+    environment_variable {
+      name  = "SERVICE_PORT"
+      value = var.container_port
+    }
 
-  #   environment_variable {
-  #     name  = "MEMORY_RESV"
-  #     value = var.memory_reserv
-  #   }
+    environment_variable {
+      name  = "MEMORY_RESV"
+      value = var.memory_reserv
+    }
  }
   source {
     type      = "CODEPIPELINE"
-    #buildspec = "buildspec.yaml"
-    buildspec = var.buildspec
+    buildspec = "buildspec.yaml"
+    #buildspec = var.buildspec
   }
 }

@@ -1,0 +1,47 @@
+version: 0.2
+ 
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+  pre_build:
+    commands:
+      - aws --version
+      - curl 169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI | jq 'to_entries | [ .[] | select(.key | (contains("Expiration") or contains("RoleArn"))  | not) ] |  map(if .key == "AccessKeyId" then . + {"key":"AWS_ACCESS_KEY_ID"} else . end) | map(if .key == "SecretAccessKey" then . + {"key":"AWS_SECRET_ACCESS_KEY"} else . end) | map(if .key == "Token" then . + {"key":"AWS_SESSION_TOKEN"} else . end) | map("export \(.key)=\(.value)") | .[]' -r > /tmp/cred.txt # work around https://github.com/hashicorp/terraform/issues/8746
+      - chmod +x /tmp/cred.txt
+      - . /tmp/cred.txt
+      - echo Logging in to Amazon ECR...
+      - $(aws ecr get-login --region us-east-1 --no-include-email)
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...          
+      - docker build -t nginx:latest .
+      - docker tag nginx:latest 020046395185.dkr.ecr.us-east-1.amazonaws.com/nginx:latest      
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - printf '{"ImageURI":"%s"}' $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG  > imageDetail.json
+      - sed -i 's/<APP_NAME>/'$IMAGE_REPO_NAME'/g' appspec.yml taskdef.json
+      - sed -i 's/<SERVICE_PORT>/'$SERVICE_PORT'/g' appspec.yml taskdef.json
+      - sed -i 's/<AWS_ACCOUNT_ID>/'$AWS_ACCOUNT_ID'/g' taskdef.json
+      - sed -i 's/<MEMORY_RESV>/'$MEMORY_RESV'/g' taskdef.json
+      - sed -i 's/<IMAGE_NAME>/'$AWS_ACCOUNT_ID'\.dkr\.ecr\.'$AWS_DEFAULT_REGION'\.amazonaws.com\/'$IMAGE_REPO_NAME'\:'$IMAGE_TAG'/g' taskdef.json
+      # - echo Build completed on `date`
+      # - echo Pushing the Docker image...
+      # - docker push 020046395185.dkr.ecr.us-east-1.amazonaws.com/nginx:latest
+      # - printf '{"ImageURI":"%s"}' 020046395185.dkr.ecr.us-east-1.amazonaws.com/nginx:latest  > imageDetail.json
+      # - sed -i 's/<APP_NAME>/'${app_name}'/g' appspec.yaml taskdef.json
+      # - sed -i 's/<SERVICE_PORT>/${service_port}/g' appspec.yaml taskdef.json
+      # #- sed -i 's/<TASK_DEFINITION>/'${task_definition_arn}'/g' appspec.yaml
+      # - sed -i 's/<AWS_ACCOUNT_ID>/${aws_account_id}/g' taskdef.json
+      # - sed -i 's/<MEMORY_RESV>/${memory_reserv}/g' taskdef.json
+      # - sed -i 's/<IMAGE_NAME>/'${image_name}'/g' taskdef.json
+      # #- sed -i 's/<IMAGE_NAME>/'020046395185'\.dkr\.ecr\.'us-east-1'\.amazonaws.com\/'nginx'\:'latest'/g' taskdef.json
+artifacts:
+  files: 
+    - imageDetail.json
+    - appspec.yaml
+    - taskdef.json

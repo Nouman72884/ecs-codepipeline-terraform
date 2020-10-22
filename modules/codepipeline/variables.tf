@@ -6,5 +6,5 @@ variable "aws_region" {}
 variable "container_port" {}
 variable "memory_reserv" {}
 variable "task_definition" {}
-variable "buildspec" {}
+#variable "buildspec" {}
 

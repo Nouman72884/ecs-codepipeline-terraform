@@ -1,15 +1,15 @@
-data "template_file" "buildspec" {
-  template = file("./template/buildspec.yaml")
+# data "template_file" "buildspec" {
+#   template = file("./template/buildspec.yaml")
 
-  vars = {
-    app_name     = var.service_name
-    service_port = var.container_port
-    aws_account_id = "020046395185"
-    memory_reserv = var.memory_reserv
-    image_name = "020046395185.dkr.ecr.us-east-1.amazonaws.com/nginx:latest"
-    task_definition_arn = module.task_definition.task_definition_arn
-  }
-}
+#   vars = {
+#     app_name     = var.service_name
+#     service_port = var.container_port
+#     aws_account_id = "020046395185"
+#     memory_reserv = var.memory_reserv
+#     image_name = "020046395185.dkr.ecr.us-east-1.amazonaws.com/nginx:latest"
+#     task_definition_arn = module.task_definition.task_definition_arn
+#   }
+# }
 
 module "alb" {
   source                = "./modules/alb"
@@ -39,7 +39,7 @@ module "codepipeline" {
   container_port  = var.container_port
   memory_reserv   = var.memory_reserv
   task_definition = module.task_definition.task_definition_arn
-  buildspec = data.template_file.buildspec.rendered
+  #buildspec = data.template_file.buildspec.rendered
 }
 
 module "service" {
